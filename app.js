@@ -1,11 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser")
+require("dotenv").config()
 
 const authRoutes = require("./routes/authRoutes.js");
 const { requireAuth, checkUser } = require("./middleware/authMiddleware.js");
 
 const app = express();
+
+const MONGODB_URI = process.env.MONGODB_URI
 
 // middleware
 app.use(express.static("public"));
@@ -16,7 +19,7 @@ app.use(cookieParser())
 app.set("view engine", "ejs");
 
 // database connection
-const dbURI = "mongodb+srv://mdev:LVE2QwAY7mpskWvVFG7R@my-website.28mpbof.mongodb.net/my-website";
+const dbURI = MONGODB_URI
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
